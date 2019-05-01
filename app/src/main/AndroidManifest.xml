@@ -24,20 +24,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="guess_the_song.com" />
-            </intent-filter>
         </activity>
 
         <provider
-            android:authorities="com.facebook.app.FacebookContentPrivider2306511759675663"
+            android:authorities="com.facebook.app.FacebookContentProvider2306511759675663"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
     </application>
