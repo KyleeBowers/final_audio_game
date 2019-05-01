@@ -1,5 +1,6 @@
 package com.example.final_audio_game;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,9 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
     // Array of arrays of different song choices
     private String[][] choices = {
             {"Lucid Dreams", "What a Time", "God's Plan", "Comethru"},
@@ -31,14 +30,15 @@ public class MainActivity extends AppCompatActivity {
             {"Comethru", "Please Me", "Without Me", "Better Now"},
             {"Lucid Dreams", "Dancing with a Stranger", "Let Me Down Slowly", "Talk"},
             {"Older", "The Only", "What a Time", "Sweet but Psycho"},
-            {"The Middle", "The Only", "Talk", "Better Now"}
+            {"The Middle", "The Only", "Talk", "Better Now"},
+            {""}
     };
 
     // Array of answers
     private String[] answers = {"God's Plan", "The Only", "Rolling in the Deep", "Let Me Down Slowly",
             "7 Rings", "Sweet but Psycho", "Please Me", "Without Me", "Comethru", "Lucid Dreams",
             "What a Time", "Tik Tok", "Talk", "A Little Braver", "Better Now", "Dancing with a Stranger",
-            "Older", "The Middle"};
+            "Older", "The Middle", ""};
 
     // Adding all the songs to the ArrayList Songs
     private int[] Songs;
@@ -46,11 +46,8 @@ public class MainActivity extends AppCompatActivity {
     // Current song
     private MediaPlayer song;
 
-    // Whether or not a new question is shown
-    private boolean newQuestion = false;
-
-    // Determine if a song stopped or not
-    private boolean stop = false;
+    //Create variable to count down the chances still have
+    private TextView chanceView;
     // Create variable to hold the score view
     private TextView scoreView;
     // Variable for the first choice button
@@ -65,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize the score to 0
     private int score = 0;
+    // Initialize the number chances to 3
+    private int chance = 3;
     // Initialize question number to 0
     private int questionNumber = 0;
-    // Variable for the answer
+    // Set the answer to the array of answers at current question number
     private String answer = answers[questionNumber];
 
     // Get the first choice of each question
@@ -99,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
+        // An array of songs
         Songs = new int[] {
                 R.raw.god_s_plan, R.raw.the_only, R.raw.rolling_in_the_deep,
                 R.raw.let_me_down_slowly, R.raw.seven_rings, R.raw.sweet_but_psycho,
@@ -111,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the current song
         song = MediaPlayer.create(this, Songs[questionNumber]);
-        // Connecting the variable with the buttons in the xml
+        // Connecting the variable with the buttons and textViews in the xml
         scoreView = findViewById(R.id.score);
+        chanceView = findViewById(R.id.chance);
         // Variable for the song player button
         Button songSound = findViewById(R.id.play_button);
         choice1 = findViewById(R.id.choice1);
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         songSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Plays the song when the button is clicked
+                // Plays the song when the button is clicked, stops it when it's being clicked again
                 if (song.isPlaying()) {
                     song.pause();
                 } else {
@@ -134,10 +135,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // Create listeners to handle when each button of the question is pressed
         choice1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Stop the previous song immediately when new question is comes up
                 song.stop();
                 // If the choice that is clicked equals to the answer, then score goes up by one
                 if (choice1.getText().equals(answer)) {
@@ -146,19 +149,28 @@ public class MainActivity extends AppCompatActivity {
                     questionNumber++;
                     // Update the score
                     updateScore(score);
+
+                    if (score == 18) {
+                        gameOver();
+                    }
+                    // Update the multiple choices
+                    updateChoices();
                     // Update song
                     updateMediaPlayer();
-                    // Update the multiple choices
-                    updateChoices();
                     // Show a short text if got the answer right, else says it's wrong
-                    Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
                 } else {
+                    chance -= 1;
                     // Update the question number
                     questionNumber++;
+                    updateChance(chance);
+                    Toast.makeText(GameActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
+                    if (chance == 0) {
+                        gameOver();
+                    }
                     // Update the multiple choices
                     updateChoices();
                     updateMediaPlayer();
-                    Toast.makeText(MainActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -174,19 +186,27 @@ public class MainActivity extends AppCompatActivity {
                     questionNumber++;
                     // Update the score
                     updateScore(score);
+                    if (score == 18) {
+                        gameOver();
+                    }
+                    // Update the multiple choices
+                    updateChoices();
                     // Update song
                     updateMediaPlayer();
-                    // Update the multiple choices
-                    updateChoices();
                     // Show a short text if got the answer right, else says it's wrong
-                    Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
                 } else {
+                    chance -= 1;
                     // Update the question number
                     questionNumber++;
+                    updateChance(chance);
+                    Toast.makeText(GameActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
+                    if (chance == 0 || questionNumber == 18) {
+                        gameOver();
+                    }
                     // Update the multiple choices
                     updateChoices();
                     updateMediaPlayer();
-                    Toast.makeText(MainActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -202,20 +222,28 @@ public class MainActivity extends AppCompatActivity {
                     questionNumber++;
                     // Update the score
                     updateScore(score);
+                    if (questionNumber == 18) {
+                        gameOver();
+                    }
+                    // Update the multiple choices
+                    updateChoices();
                     // Update song
                     updateMediaPlayer();
-                    // Update the multiple choices
-                    updateChoices();
                     // Show a short text if got the answer right, else says it's wrong
-                    Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
 
                 } else {
+                    chance -= 1;
                     // Update the question number
                     questionNumber++;
+                    updateChance(chance);
+                    Toast.makeText(GameActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
+                    if (chance == 0 || questionNumber == 18) {
+                        gameOver();
+                    }
                     // Update the multiple choices
                     updateChoices();
                     updateMediaPlayer();
-                    Toast.makeText(MainActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -231,19 +259,28 @@ public class MainActivity extends AppCompatActivity {
                     questionNumber++;
                     // Update the score
                     updateScore(score);
+                    if (questionNumber == 18) {
+                        gameOver();
+                    }
                     // Update song
+                    updateChoices();
                     updateMediaPlayer();
                     // Update the multiple choices
-                    updateChoices();
                     // Show a short text if got the answer right, else says it's wrong
-                    Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
                 } else {
+                    chance -= 1;
                     // Update the question number
                     questionNumber++;
+                    updateChance(chance);
+
+                    Toast.makeText(GameActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
+                    if (chance == 0 || questionNumber == 18) {
+                        gameOver();
+                    }
                     // Update the multiple choices
                     updateChoices();
                     updateMediaPlayer();
-                    Toast.makeText(MainActivity.this, "Wrong...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -267,5 +304,17 @@ public class MainActivity extends AppCompatActivity {
     // Updates the scoreView with the current score
     private void updateScore(int pt) {
         scoreView.setText("" + score);
+    }
+
+
+    // Updates the chanceView with the current chances left
+    private void updateChance(int pt) {
+        chanceView.setText("" + chance);
+    }
+
+    private void gameOver() {
+        Intent gameOver = new Intent(getApplicationContext(), GameOver.class);
+        gameOver.putExtra("SCORE", score);
+        startActivity(gameOver);
     }
 }

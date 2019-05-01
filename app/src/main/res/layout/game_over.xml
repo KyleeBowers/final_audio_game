@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameOver"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+
+        <TextView
+            android:id="@+id/game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Game"
+            android:textAlignment="center"
+            android:textSize="70sp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/over"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Over"
+            android:textAlignment="center"
+            android:textSize="70sp"
+            android:layout_marginTop="100dp"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/scoreNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginTop="200dp"
+            android:textAlignment="center"
+            android:textSize="50sp" />
+
+
+        <TextView
+            android:id="@+id/highestScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Highest Score"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:layout_marginTop="300dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/highestNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginTop="350dp"
+            android:layout_marginBottom="10dp"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/playAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="play again"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/shareLink"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="75dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="SHARE LINK"
+        android:textSize="40sp"/>
+
+
+</LinearLayout>

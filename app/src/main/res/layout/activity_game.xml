@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".GameActivity"
     android:orientation="vertical">
     
     <RelativeLayout
@@ -28,6 +28,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentLeft="true"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/chanceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Chance"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/chance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="25dp"
             android:layout_alignParentRight="true"
             android:textSize="20dp"/>
 
@@ -87,15 +107,5 @@
         android:textSize="13dp"
         android:layout_gravity="center"
         android:id="@+id/choice4"/>
-
-    <Button
-        android:id="@+id/Exit"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="#ffff"
-        android:text="Exit"
-        android:textAlignment="center"
-        android:textSize="13dp" />
 
 </LinearLayout>

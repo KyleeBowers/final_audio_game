@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">final_audio_game</string>
+    
+    <string name="facebook_app_id">2306511759675663</string>
+    <string name="facebook_login_protocol_scheme">fb2306511759675663</string>
 </resources>
